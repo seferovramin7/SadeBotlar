@@ -32,7 +32,7 @@ public class RequestCreationService {
         for (int i = 1; i <= 10; i++) {
             String url = urLcreator.createUrl(i);
             Boolean aBoolean = restService.generalRestService(url);
-            if (!aBoolean) {
+            if (aBoolean) {
                 messageReceiverServiceImpl.sendMessage(messageReceiverServiceImpl
                         .getNewProductMessage(1240851037L, "Şuşaya Gedirik !"));
             }
