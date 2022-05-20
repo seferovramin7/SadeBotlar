@@ -34,7 +34,7 @@ public class RequestCreationService {
             Boolean aBoolean = restService.generalRestService(url);
             if (aBoolean) {
                 messageReceiverServiceImpl.sendMessage(messageReceiverServiceImpl
-                        .getNewProductMessage(1240851037L, "Şuşaya Gedirik !"));
+                        .getNewProductMessage(-700721976L, "Şuşaya Gedirik !"));
             }
         }
     }
