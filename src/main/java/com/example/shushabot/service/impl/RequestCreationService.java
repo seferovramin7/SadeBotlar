@@ -47,7 +47,7 @@ public class RequestCreationService {
     public void iTicket() throws IOException, ParseException {
         List<NotificationDTO> notificationDTOList = new ArrayList<>();
             Boolean aBoolean = restService.garabagRestService(garabagUrl);
-            if (!aBoolean) {
+            if (aBoolean) {
                 messageReceiverServiceImpl.sendMessage(messageReceiverServiceImpl
                         .getNewProductMessage(-700721976L, "Qarabağ oyununa biletler satışa çıxdı"));
             }
