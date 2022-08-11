@@ -27,4 +27,18 @@ public class ParseHTML {
         }
         return false;
     }
+
+    public Boolean parseIticketHtml(String rawHTML) throws ParseException {
+        Document doc = Jsoup.parse(rawHTML);
+            Elements productDate = doc.selectXpath("//*[@id=\"__layout\"]/div/div[2]/div[3]/div");
+            String directionString = productDate.html();
+        System.out.println("directionString : " + productDate);
+            if (directionString.equals("No events found according to your request.")) {
+                System.out.println("Bilet yoxdur");
+                return true;
+            }
+            System.out.println("Bilet var");
+        return false;
+    }
+
 }

@@ -4,6 +4,7 @@ package com.example.shushabot.service.impl;
 import com.example.shushabot.telegram.send.text.NotificationDTO;
 import com.example.shushabot.util.URLcreator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,9 @@ public class RequestCreationService {
     @Autowired
     RestService restService;
 
+    @Value("${garabag.oyunu.search}")
+    String garabagUrl;
+
     public RequestCreationService(MessageReceiverServiceImpl messageReceiverServiceImpl) {
         this.messageReceiverServiceImpl = messageReceiverServiceImpl;
     }
@@ -37,5 +41,15 @@ public class RequestCreationService {
                         .getNewProductMessage(-700721976L, "Şuşaya Gedirik !"));
             }
         }
+    }
+
+    @Scheduled(fixedRateString = "${task.update-telegram-update.rate}")
+    public void iTicket() throws IOException, ParseException {
+        List<NotificationDTO> notificationDTOList = new ArrayList<>();
+            Boolean aBoolean = restService.garabagRestService(garabagUrl);
+            if (!aBoolean) {
+                messageReceiverServiceImpl.sendMessage(messageReceiverServiceImpl
+                        .getNewProductMessage(-700721976L, "Qarabağ oyununa biletler satışa çıxdı"));
+            }
     }
 }
