@@ -43,7 +43,7 @@ public class RequestCreationService {
         }
     }
 
-    @Scheduled(fixedRateString = "${task.update-telegram-update.rate}")
+   // @Scheduled(fixedRateString = "${task.update-telegram-update.rate}")
     public void iTicket() throws IOException, ParseException {
         List<NotificationDTO> notificationDTOList = new ArrayList<>();
             Boolean aBoolean = restService.garabagRestService(garabagUrl);
