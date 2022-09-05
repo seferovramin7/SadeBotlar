@@ -36,6 +36,19 @@ public class RequestCreationService {
         this.messageReceiverServiceImpl = messageReceiverServiceImpl;
     }
 
+    @Scheduled(fixedRateString = "${task.update-telegram-update.rate}")
+    public void createRequest() throws IOException, ParseException {
+        List<NotificationDTO> notificationDTOList = new ArrayList<>();
+        for (int i = 1; i <= 10; i++) {
+            String url = urLcreator.createUrl(i);
+            Boolean aBoolean = restService.generalRestService(url);
+            if (aBoolean) {
+                messageReceiverServiceImpl.sendMessage(messageReceiverServiceImpl
+                        .getNewProductMessage(-700721976L, "Şuşaya Gedirik !"));
+            }
+        }
+    }
+
 
     @Scheduled(fixedRateString = "${task.update-telegram-update.rate}")
     public void createRequestAdvanced2() throws IOException, ParseException {

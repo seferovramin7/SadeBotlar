@@ -22,10 +22,20 @@ public class RestService {
     @Autowired
     ParseHTML parseHTML;
 
+    public Boolean generalRestService(String url) throws IOException, ParseException {
+        String result = restTemplate.getForObject(url, String.class);
+        try {
+            Boolean aBoolean = parseHTML.parseHtml(result);
+            return aBoolean;
+        } catch (ParseException e) {
+            return null;
+        }
+    }
+
     public String advancedShushaRestService(String url) throws IOException, ParseException {
         String result = restTemplate.getForObject(url, String.class);
         try {
-            String s = parseHTML.parseHtml(result);
+            String s = parseHTML.parseAdvancedHtml(result);
             return s;
         } catch (ParseException e) {
             return null;

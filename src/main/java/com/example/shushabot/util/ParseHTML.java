@@ -10,7 +10,25 @@ import java.text.ParseException;
 @Component
 public class ParseHTML {
 
-    public String parseHtml(String rawHTML) throws ParseException {
+    public Boolean parseHtml(String rawHTML) throws ParseException {
+        Document doc = Jsoup.parse(rawHTML);
+        for (int i = 1; i <= 10; i++) {
+            Elements productDate = doc.select("#content > div > div.col-md-12.mt-4.mt-md-0.d-none.d-md-block > div > div.table-responsive > div.bus-list > div:nth-child( " + i + " ) > div > div.col.col-sm-2.text-center.date-info > span");
+            String directionString = productDate.html();
+
+            if (directionString.equals("Bakı → Şuşa → Bakı")) {
+                Elements isActiveElement = doc.select("#content > div > div.col-md-12.mt-4.mt-md-0.d-none.d-md-block > div > div.table-responsive > div.bus-list > div:nth-child(" + i + ") > div > div:nth-child(8) > div");
+                String isActiveElementString = isActiveElement.html();
+                if (!isActiveElementString.equals("Biletlər satılmışdır")) {
+                    System.out.println(isActiveElementString);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public String parseAdvancedHtml(String rawHTML) throws ParseException {
         Document doc = Jsoup.parse(rawHTML);
 
         Elements ifExists = doc.select("#content > section.container > div.row.mb-4 > div > div > div > h2");
