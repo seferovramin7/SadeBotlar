@@ -44,7 +44,7 @@ public class RequestCreationService {
             Boolean aBoolean = restService.generalRestService(url);
             if (aBoolean) {
                 messageReceiverServiceImpl.sendMessage(messageReceiverServiceImpl
-                        .getNewProductMessage(-700721976L, "Şuşaya Gedirik !"));
+                        .getNewProductMessage(508914176L, "Şuşaya Gedirik !"));
             }
         }
     }
@@ -55,7 +55,7 @@ public class RequestCreationService {
         String s = restService.advancedShushaRestService(url2);
         if (s != null) {
             messageReceiverServiceImpl.sendMessage(messageReceiverServiceImpl
-                    .getNewProductMessage(-700721976L, "Şuşaya 1 nəfərlik bilet var ! \n" + s + " tarixi üçün"));
+                    .getNewProductMessage(508914176L, "Şuşaya 1 nəfərlik bilet var ! \n" + s + " tarixi üçün"));
             System.out.println("Şuşaya 1 nəfərlik bilet var ! \n" + s + " tarixi üçün");
         }
     }
@@ -65,7 +65,7 @@ public class RequestCreationService {
         String s = restService.advancedShushaRestService(url1);
         if (s != null) {
             messageReceiverServiceImpl.sendMessage(messageReceiverServiceImpl
-                    .getNewProductMessage(-700721976L, "Şuşaya 2 nəfərlik bilet var ! \n" + s + " tarixi üçün"));
+                    .getNewProductMessage(508914176L, "Şuşaya 2 nəfərlik bilet var ! \n" + s + " tarixi üçün"));
             System.out.println("Şuşaya 2 nəfərlik bilet var ! \n" + s + " tarixi üçün");
         }
     }
