@@ -38,7 +38,7 @@ public class ParseHTML {
                 if (route.equals("Bakı → Şuşa → Bakı")) {
                     Elements timeInfo = e.getElementsByClass("duration");
                     int numberOfSeats = Integer.parseInt(timeInfo.text().split("/")[0]);
-                    if (numberOfSeats <= 0) {
+                    if (numberOfSeats > 0) {
                         System.out.println("-----");
                         return true;
                     }
