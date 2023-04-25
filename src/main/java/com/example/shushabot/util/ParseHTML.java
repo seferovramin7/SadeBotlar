@@ -1,62 +1,50 @@
 package com.example.shushabot.util;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
-
-import java.text.ParseException;
+import org.springframework.web.client.RestTemplate;
 
 @Component
 public class ParseHTML {
 
-    public Boolean parseHtml(String rawHTML) throws ParseException {
-        Document doc = Jsoup.parse(rawHTML);
-        for (int i = 1; i <= 10; i++) {
-            Elements productDate = doc.select("#content > div > div.col-md-12.mt-4.mt-md-0.d-none.d-md-block > div > div.table-responsive > div.bus-list > div:nth-child( " + i + " ) > div > div.col.col-sm-2.text-center.date-info > span");
-            String directionString = productDate.html();
+    public Boolean parseHtml() throws ParseException {
+        RestTemplate restTemplate = new RestTemplate();
+        String result = restTemplate.getForObject("https://yolumuzqarabaga.az/race", String.class);
 
-            if (directionString.equals("Bakı → Şuşa → Bakı")) {
-                Elements isActiveElement = doc.select("#content > div > div.col-md-12.mt-4.mt-md-0.d-none.d-md-block > div > div.table-responsive > div.bus-list > div:nth-child(" + i + ") > div > div:nth-child(8) > div");
-                String isActiveElementString = isActiveElement.html();
-                if (!isActiveElementString.equals("Biletlər satılmışdır")) {
-                    System.out.println(isActiveElementString);
-                    return true;
+        Document doc = Jsoup.parse(result);
+
+        Elements elementsByClass = doc.getElementsByClass("bus-item");
+
+
+        for (Element e : elementsByClass) {
+            String dateInfo = e.getElementsByClass("date-info").text();
+            String dateString = dateInfo.split(" ")[0];
+            String route = dateInfo.substring(dateInfo.indexOf(' ')).trim();
+
+
+            Calendar c1 = Calendar.getInstance();
+            SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH);
+            c1.setTime(sdf.parse(dateString));
+
+            if ((c1.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) ||
+                    (c1.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY)) {
+                if (route.equals("Bakı → Şuşa → Bakı")) {
+                    Elements timeInfo = e.getElementsByClass("duration");
+                    int numberOfSeats = Integer.parseInt(timeInfo.text().split("/")[0]);
+                    if (numberOfSeats <= 0) {
+                        System.out.println("-----");
+                        return true;
+                    }
                 }
             }
         }
         return false;
     }
-
-    public String parseAdvancedHtml(String rawHTML) throws ParseException {
-        Document doc = Jsoup.parse(rawHTML);
-
-        Elements ifExists = doc.select("#content > section.container > div.row.mb-4 > div > div > div > h2");
-
-        if (!ifExists.html().equals("Seçilmiş tarix üzrə bütün biletlər satılmışdır")) {
-            for (int i = 1; i <= 5; i++) {
-
-                Elements travelLine = doc.select("#content > section.container > div.row.mb-4 > div > div > div.bus-list > div:nth-child(1)" + i);
-                Elements time = doc.select("#content > section.container > div.row.mb-4 > div > div > div.bus-list > div:nth-child(" + i + ") > div > div.col.col-sm-2.text-center.date-info > span");
-
-                System.out.println(time.html());
-
-                return time.html();
-            }
-        }
-        return null;
-    }
-        public Boolean parseIticketHtml (String rawHTML) throws ParseException {
-            Document doc = Jsoup.parse(rawHTML);
-            Elements productDate = doc.selectXpath("//*[@id=\"__layout\"]/div/div[2]/div[3]/div");
-            String directionString = productDate.html();
-            System.out.println("directionString : " + productDate);
-            if (directionString.equals("No events found according to your request.")) {
-                System.out.println("Bilet yoxdur");
-                return true;
-            }
-            System.out.println("Bilet var");
-            return false;
-        }
-
-    }
+}

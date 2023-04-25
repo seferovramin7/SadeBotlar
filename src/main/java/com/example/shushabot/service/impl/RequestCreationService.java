@@ -23,9 +23,6 @@ public class RequestCreationService {
     @Autowired
     RestService restService;
 
-    @Value("${garabag.oyunu.search}")
-    String garabagUrl;
-
     @Value("${shusha.advanced1.url}")
     String url1;
 
@@ -36,37 +33,13 @@ public class RequestCreationService {
         this.messageReceiverServiceImpl = messageReceiverServiceImpl;
     }
 
-    @Scheduled(fixedRateString = "${task.update-telegram-update.rate}")
+    @Scheduled(fixedRateString = "3000")
     public void createRequest() throws IOException, ParseException {
-        List<NotificationDTO> notificationDTOList = new ArrayList<>();
-        for (int i = 1; i <= 10; i++) {
-            String url = urLcreator.createUrl(i);
-            Boolean aBoolean = restService.generalRestService(url);
+            Boolean aBoolean = restService.generalRestService();
             if (aBoolean) {
                 messageReceiverServiceImpl.sendMessage(messageReceiverServiceImpl
                         .getNewProductMessage(508914176L, "Şuşaya Gedirik !"));
-            }
-        }
-    }
-
-
-    @Scheduled(fixedRateString = "${task.update-telegram-update.rate}")
-    public void createRequestAdvanced2() throws IOException, ParseException {
-        String s = restService.advancedShushaRestService(url2);
-        if (s != null) {
-            messageReceiverServiceImpl.sendMessage(messageReceiverServiceImpl
-                    .getNewProductMessage(508914176L, "Şuşaya 1 nəfərlik bilet var ! \n" + s + " tarixi üçün"));
-            System.out.println("Şuşaya 1 nəfərlik bilet var ! \n" + s + " tarixi üçün");
-        }
-    }
-
-    @Scheduled(fixedRateString = "${task.update-telegram-update.rate}")
-    public void createRequestAdvanced1() throws IOException, ParseException {
-        String s = restService.advancedShushaRestService(url1);
-        if (s != null) {
-            messageReceiverServiceImpl.sendMessage(messageReceiverServiceImpl
-                    .getNewProductMessage(508914176L, "Şuşaya 2 nəfərlik bilet var ! \n" + s + " tarixi üçün"));
-            System.out.println("Şuşaya 2 nəfərlik bilet var ! \n" + s + " tarixi üçün");
+                System.out.println("++++++++++++");
         }
     }
 }
