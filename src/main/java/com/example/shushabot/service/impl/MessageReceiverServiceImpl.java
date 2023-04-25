@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.regex.Pattern;
+import org.springframework.web.client.RestTemplate;
 
 @Slf4j
 @Service
@@ -39,7 +40,10 @@ public class MessageReceiverServiceImpl implements MessageReceiverService {
     @Override
     public SendMessageResponseDTO sendMessage(SendMessageDTO sendMessageDTO) {
         String url = telegramApiBaseUrl + "/bot" + botToken + "/sendMessage";
-        SendMessageResponseDTO sendMessageResponseDTO = httpRequestService.sendPostRequest(url, sendMessageDTO, SendMessageResponseDTO.class);
+
+        RestTemplate restTemplate = new RestTemplate();
+        SendMessageResponseDTO sendMessageResponseDTO =
+                restTemplate.postForObject(url, sendMessageDTO, SendMessageResponseDTO.class);
         return sendMessageResponseDTO;
     }
 
